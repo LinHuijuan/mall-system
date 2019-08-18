@@ -15,12 +15,12 @@ const PORT = process.env.PORT && Number(process.env.PORT)
 
 const express = require('express');
 const app = express();
-const router = express.Router();
-const goodsData = require('../mock/goods.json');
-router.get('/goods', (req,res,next)=>{
-  res.json(goodsData);
-})
-app.use(router);
+// const router = express.Router();
+// const goodsData = require('../mock/goods.json');
+// router.get('/', (req,res,next)=>{
+//   res.json(goodsData);
+// })
+// app.use(router);
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {

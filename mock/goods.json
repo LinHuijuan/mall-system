@@ -4,74 +4,74 @@
     {
       "productId": "10001",
       "productName": "纯甄牛奶",
-      "prodcutPrice": "69.9",
-      "prodcutImg": "1.jpg"
+      "productPrice": "69.9",
+      "productImg": "1.jpg"
     },
     {
       "productId": "10002",
       "productName": "统一绿茶",
-      "prodcutPrice": "42",
-      "prodcutImg": "2.jpg"
+      "productPrice": "42",
+      "productImg": "2.jpg"
     },
     {
       "productId": "10003",
       "productName": "抽纸",
-      "prodcutPrice": "8689.3",
-      "prodcutImg": "3.jpg"
+      "productPrice": "8689.3",
+      "productImg": "3.jpg"
     },
     {
       "productId": "10004",
       "productName": "银鹭八宝粥",
-      "prodcutPrice": "51.5",
-      "prodcutImg": "4.jpg"
+      "productPrice": "51.5",
+      "productImg": "4.jpg"
     },
     {
       "productId": "10005",
       "productName": "维他奶",
-      "prodcutPrice": "24",
-      "prodcutImg": "5.jpg"
+      "productPrice": "24",
+      "productImg": "5.jpg"
     },
     {
       "productId": "10006",
       "productName": "真果粒",
-      "prodcutPrice": "56",
-      "prodcutImg": "6.jpg"
+      "productPrice": "56",
+      "productImg": "6.jpg"
     },
     {
       "productId": "10007",
       "productName": "果粒橙",
-      "prodcutPrice": "36.5",
-      "prodcutImg": "7.jpg"
+      "productPrice": "36.5",
+      "productImg": "7.jpg"
     },
     {
       "productId": "10008",
       "productName": "农夫山泉",
-      "prodcutPrice": "29.9",
-      "prodcutImg": "8.jpg"
+      "productPrice": "29.9",
+      "productImg": "8.jpg"
     },
     {
       "productId": "10008",
       "productName": "哇哈哈",
-      "prodcutPrice": "33.3",
-      "prodcutImg": "9.jpg"
+      "productPrice": "33.3",
+      "productImg": "9.jpg"
     },
     {
       "productId": "10008",
       "productName": "苹果醋",
-      "prodcutPrice": "49.9",
-      "prodcutImg": "10.jpg"
+      "productPrice": "49.9",
+      "productImg": "10.jpg"
     },
     {
       "productId": "10008",
       "productName": "东鹏特饮",
-      "prodcutPrice": "67",
-      "prodcutImg": "11.jpg"
+      "productPrice": "67",
+      "productImg": "11.jpg"
     },
     {
       "productId": "10008",
       "productName": "脉动运动饮料",
-      "prodcutPrice": "39.9",
-      "prodcutImg": "12.jpg"
+      "productPrice": "39.9",
+      "productImg": "12.jpg"
     }
   ]
 }

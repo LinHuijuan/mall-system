@@ -12,57 +12,21 @@
           <dl>
             <dt>Price:</dt>
             <dd><a href="javascript:void(0)">All</a></dd>
-            <dd><a href="javascript:void(0)">0 - 100</a></dd>
-            <dd><a href="javascript:void(0)">100 - 500</a></dd>
-            <dd><a href="javascript:void(0)">500 - 1000</a></dd>
-            <dd><a href="javascript:void(0)">1000 - 2000</a></dd>
+            <dd><a href="javascript:void(0)">0 - 30</a></dd>
+            <dd><a href="javascript:void(0)">30 - 50</a></dd>
+            <dd><a href="javascript:void(0)">50 - 70</a></dd>
+            <dd><a href="javascript:void(0)">70 以上</a></dd>
           </dl>
         </div>
         <!-- search result accessories list -->
         <ul class="goods-list">
-          <li>
+          <li v-for='item in goodsList' :key='item.productId'>
             <div class="goods-pic">
-              <a href="#"><img src="static/1.jpg" alt /></a>
+              <a href="#"><img :src='`/static/${item.productImg}`' alt /></a>
             </div>
             <div class="goods-msg">
-              <div class="name">XX</div>
-              <div class="price">999</div>
-              <el-button>加入购物车</el-button>
-            </div>
-          </li>
-          <li>
-            <div class="goods-pic">
-              <a href="#">
-                <img src="static/2.jpg" alt />
-              </a>
-            </div>
-            <div class="goods-msg">
-              <div class="name">XX</div>
-              <div class="price">1000</div>
-              <el-button>加入购物车</el-button>
-            </div>
-          </li>
-          <li>
-            <div class="goods-pic">
-              <a href="#">
-                <img src="static/3.jpg" alt />
-              </a>
-            </div>
-            <div class="goods-msg">
-              <div class="name">XX</div>
-              <div class="price">500</div>
-              <el-button>加入购物车</el-button>
-            </div>
-          </li>
-          <li>
-            <div class="goods-pic">
-              <a href="#">
-                <img src="static/3.jpg" alt />
-              </a>
-            </div>
-            <div class="goods-msg">
-              <div class="name">XX</div>
-              <div class="price">2499</div>
+              <div class="name">{{item.productName}}</div>
+              <div class="price">{{item.productPrice}}</div>
               <el-button>加入购物车</el-button>
             </div>
           </li>
@@ -85,9 +49,8 @@ export default {
   methods: {
     getGoodsList () {
       axios.get('/goods').then((res) => {
-        console.log(res)
         var data = res.data
-        this.goodsList = data.result
+        this.goodsList = data.result.list
       })
     }
   }
@@ -120,6 +83,8 @@ export default {
     }
       .price-filter{
         font-size: 20px;
+        flex-basis: 150px;
+        flex-shrink: 0;
       }
         a{
           text-decoration: none;
@@ -129,15 +94,17 @@ export default {
         flex-grow: 1;
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
       }
         li{
           list-style: none;
           background: #FFF;
           text-align: center;
+          margin-right: 20px;
+          margin-bottom: 10px;
+          flex-grow: 1;
         }
           img{
-            width: 200px;
+            width: 210px;
           }
           .goods-msg /deep/ .el-button{
             width: 98%;
