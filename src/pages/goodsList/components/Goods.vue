@@ -22,7 +22,12 @@
         <ul class="goods-list">
           <li v-for='item in goodsList' :key='item.productId'>
             <div class="goods-pic">
-              <a href="#"><img :src='`/static/${item.productImg}`' alt /></a>
+              <a href="#">
+                <el-image :src='`/static/${item.productImg}`' lazy>
+                  <div slot="error" class="image-slot">
+                    <i class="el-icon-picture-outline"></i>
+                  </div>
+                </el-image></a>
             </div>
             <div class="goods-msg">
               <div class="name">{{item.productName}}</div>
@@ -103,7 +108,7 @@ export default {
           margin-bottom: 10px;
           flex-grow: 1;
         }
-          img{
+          .goods-pic /deep/ .el-image{
             width: 210px;
           }
           .goods-msg /deep/ .el-button{
