@@ -14,7 +14,7 @@ mongoose.connection.on('error', () => {
   console.log('MongoDB connected fail.')
 })
 
-mongoose.connection.on('disconnected',() => {
+mongoose.connection.on('disconnected', () => {
   console.log('MongoDB disconnected.')
 })
 
@@ -29,6 +29,15 @@ router.get('/', (req, res, next) => {
   // 跳过的文档条数
   let skip = (page - 1) * pageSize
   let params = {}
+  // 总的文档数
+  let total = 0
+  Goods.find(params, (err, doc) => {
+    if (err) {
+      total = 0
+    } else {
+      total = doc.length
+    }
+  })
   // limit(num)限定取出的文档条数
   let goodsModel = Goods.find(params).skip(skip).limit(pageSize)
   // 针对某个字段排序，1表示升序，-1表示降序
@@ -45,6 +54,7 @@ router.get('/', (req, res, next) => {
         status: '0',
         msg: '',
         result: {
+          total: total,
           count: doc.length,
           list: doc
         }
