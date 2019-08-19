@@ -3,7 +3,7 @@
       <div class="filter-nav">
         <span class="sortby">Sort by:</span>
         <a href="javascript:void(0)" class="default cur">Default</a>
-        <a href="javascript:void(0)" class="price">Price</a>
+        <a href="javascript:void(0)" class="price" @click="sortGoods">Price {{priceSort}}</a>
         <a href="javascript:void(0)" class="filterby stopPop">Filter by</a>
       </div>
       <div class="goods-wrap">
@@ -45,7 +45,11 @@ export default {
   name: 'Goods',
   data () {
     return {
-      goodsList: []
+      goodsList: [],
+      page: 1,
+      pageSize: 8,
+      sortFlag: true,
+      priceSort: '↑'
     }
   },
   mounted () {
@@ -53,10 +57,26 @@ export default {
   },
   methods: {
     getGoodsList () {
-      axios.get('/goods').then((res) => {
-        var data = res.data
-        this.goodsList = data.result.list
+      // 传入参数
+      let param = {
+        page: this.page,
+        pageSize: this.pageSize,
+        sort: this.sortFlag ? 1 : -1
+      }
+      // 不能直接把param丢进来，要加在params里
+      axios.get('/goods', { params: param }).then((res) => {
+        if (res.data.status === '0') {
+          this.goodsList = res.data.result.list
+        } else {
+          this.goodsList = []
+        }
       })
+    },
+    sortGoods () {
+      this.sortFlag = !this.sortFlag
+      this.priceSort = this.sortFlag ? '↑' : '↓'
+      this.page = 1
+      this.getGoodsList()
     }
   }
 }
@@ -81,6 +101,7 @@ export default {
       a{
         text-decoration: none;
         color: #000;
+        margin-right: 8px;
       }
     .goods-wrap{
       display: flex;

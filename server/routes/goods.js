@@ -19,9 +19,22 @@ mongoose.connection.on('disconnected',() => {
 })
 
 router.get('/', (req, res, next) => {
-  // 用来测试
-  // res.send('hello,guli')
-  Goods.find({}, (err, doc) => {
+  // reg.param('XXX'):返回XXX参数的值,字符串类型
+  // 页码
+  let page = parseInt(req.param('page'))
+  // 每一页的文档条数
+  let pageSize = parseInt(req.param('pageSize'))
+  // 排序的方式
+  let sort = req.param('sort')
+  // 跳过的文档条数
+  let skip = (page - 1) * pageSize
+  let params = {}
+  // limit(num)限定取出的文档条数
+  let goodsModel = Goods.find(params).skip(skip).limit(pageSize)
+  // 针对某个字段排序，1表示升序，-1表示降序
+  goodsModel.sort({'productPrice': sort})
+  // exec(callback)
+  goodsModel.exec((err, doc) => {
     if (err) {
       res.json({
         status: '1',
