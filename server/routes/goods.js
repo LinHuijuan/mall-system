@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router()
 var mongoose = require('mongoose')
-var Goods = require('../modules/goods')
+var Goods = require('../models/goods')
 
 // 连接MongoDB数据库
 mongoose.connect('mongodb://127.0.0.1:27017/mall')
@@ -18,6 +18,7 @@ mongoose.connection.on('disconnected', () => {
   console.log('MongoDB disconnected.')
 })
 
+// 查询商品列表数据
 router.get('/', (req, res, next) => {
   // reg.param('XXX'):返回XXX参数的值,字符串类型
   // 页码
@@ -46,7 +47,7 @@ router.get('/', (req, res, next) => {
     }
   }
   // 总的文档数
-  let total = 0
+  let total
   Goods.find(params, (err, doc) => {
     if (err) {
       total = 0
@@ -79,4 +80,73 @@ router.get('/', (req, res, next) => {
   })
 })
 
-module.exports = router
+// 加入到购物车
+module.exports = router.post('/addCart', (req, res, next) => {
+  let userId = '00000000001'
+  let productId = req.body.productId
+  let User = require('../models/user')
+  User.findOne({userId: userId}, (err, userDoc) => {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message
+      })
+    } else {
+      if (userDoc) {
+        let hasAdd = false
+        userDoc.cartList.forEach((item) => {
+          if (item.productId === productId) {
+            hasAdd = true
+            item.productNum++
+          }
+        })
+        if (hasAdd) {
+          userDoc.save((err3, doc3) => {
+            if (err3) {
+              res.json({
+                status: '1',
+                msg: err3.message
+              })
+            } else {
+              res.json({
+                status: '0',
+                msg: 'suc',
+                result: userDoc
+              })
+            }
+          })
+        } else {
+          Goods.findOne({productId: productId}, (err1, doc) => {
+            if (err1) {
+              res.json({
+                status: '1',
+                msg: err1.message
+              })
+            } else {
+              if (doc) {
+                doc.productNum = 1
+                doc.checked = true
+                doc.save()
+                userDoc.cartList.push(doc)
+                userDoc.save((err2, doc2) => {
+                  if (err2) {
+                    res.json({
+                      status: '1',
+                      msg: err2.message
+                    })
+                  } else {
+                    res.json({
+                      status: '0',
+                      msg: 'suc',
+                      result: doc
+                    })
+                  }
+                })
+              }
+            }
+          })
+        }
+      }
+    }
+  })
+})

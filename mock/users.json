@@ -1,0 +1,29 @@
+{
+  "users": [
+    {
+      "userId": "00000000001",
+      "userName": "guli",
+      "userPwd": "123456",
+      "orderList": [
+        {
+          "orderId": "121134352667",
+          "orderTotal0": "1888",
+          "orderStatus": 1,
+          "creatDate": "2019-8-20",
+          "goodsList": []
+        }
+      ],
+      "cartList": [],
+      "addressList": [
+        {
+          "addressId": "2423501661",
+          "addressName": "Lin",
+          "stressName": "xiaotang",
+          "postCode": "10001",
+          "tel": "10086",
+          "isDefault": true
+        }
+      ]
+    }
+  ]
+}

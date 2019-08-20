@@ -32,7 +32,7 @@
             <div class="goods-msg">
               <div class="name">{{item.productName}}</div>
               <div class="price">{{item.productPrice}}</div>
-              <el-button>加入购物车</el-button>
+              <el-button @click="addCart(item.productId)">加入购物车</el-button>
             </div>
           </li>
         </ul>
@@ -101,6 +101,17 @@ export default {
       this.priceIndex = val
       this.page = 1
       this.getGoodsList()
+    },
+    addCart (val) {
+      axios.post('/goods/addCart', {
+        productId: val
+      }).then(res => {
+        if (res.data.status === '0') {
+          alert('success')
+        } else {
+          alert('fail')
+        }
+      })
     }
   }
 }
