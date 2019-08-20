@@ -29,6 +29,22 @@ router.get('/', (req, res, next) => {
   // 跳过的文档条数
   let skip = (page - 1) * pageSize
   let params = {}
+  let priceIndex = req.param('priceIndex')
+  let priceGt, priceLte
+  if (priceIndex !== 'all') {
+    switch (priceIndex) {
+      case '1': priceGt = 0; priceLte = 30; break
+      case '2': priceGt = 30; priceLte = 50; break
+      case '3': priceGt = 50; priceLte = 70; break
+      case '4': priceGt = 70; priceLte = 100000; break
+    }
+    params = {
+      productPrice: {
+        $gt: priceGt,
+        $lte: priceLte
+      }
+    }
+  }
   // 总的文档数
   let total = 0
   Goods.find(params, (err, doc) => {

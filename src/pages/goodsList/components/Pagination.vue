@@ -36,7 +36,7 @@ export default {
 
 <style lang="scss">
   .el-pagination{
-    text-align: center
+    text-align: center;
   }
     .el-pagination.is-background .btn-prev{
       background-color: #fff;

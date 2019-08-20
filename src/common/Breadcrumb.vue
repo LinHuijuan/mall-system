@@ -15,13 +15,13 @@ export default {
 }
 </script>
 <style lang="scss">
-.breadcrumb /deep/ .el-breadcrumb{
-  font-size: 18px;
-  line-height: 44px;
-}
 .breadcrumb {
   padding-left: 5%;
   height: 44px;
   background: #D9ECFF;
+  .el-breadcrumb{
+    font-size: 18px;
+    line-height: 44px;
+  }
 }
 </style>

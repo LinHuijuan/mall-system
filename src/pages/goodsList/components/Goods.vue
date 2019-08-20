@@ -2,20 +2,20 @@
     <div class="container">
       <div class="filter-nav">
         <span class="sortby">排序：</span>
-        <a href="javascript:void(0)" class="default cur">综合排序</a>
-        <a href="javascript:void(0)" class="price" @click="sortGoods">价格 {{priceSort}}</a>
-        <a href="javascript:void(0)" class="filterby stopPop">筛选</a>
+        <a href="javascript:;" class="default cur">综合排序</a>
+        <a href="javascript:;" class="price" @click="sortGoods">价格 {{priceSort}}</a>
+        <a href="javascript:;" class="filterby stopPop">筛选</a>
       </div>
       <div class="goods-wrap">
         <!-- filter -->
         <div class="price-filter">
           <dl>
             <dt>价格：</dt>
-            <dd><a href="javascript:void(0)">All</a></dd>
-            <dd><a href="javascript:void(0)">0 - 30</a></dd>
-            <dd><a href="javascript:void(0)">30 - 50</a></dd>
-            <dd><a href="javascript:void(0)">50 - 70</a></dd>
-            <dd><a href="javascript:void(0)">70 以上</a></dd>
+            <dd><a href="javascript:;" :class="{'cur':priceIndex==='all'}" @click="priceFilter('all')">All</a></dd>
+            <dd><a href="javascript:;" :class="{'cur':priceIndex==='1'}" @click="priceFilter('1')">0 - 30</a></dd>
+            <dd><a href="javascript:;" :class="{'cur':priceIndex==='2'}" @click="priceFilter('2')">30 - 50</a></dd>
+            <dd><a href="javascript:;" :class="{'cur':priceIndex==='3'}" @click="priceFilter('3')">50 - 70</a></dd>
+            <dd><a href="javascript:;" :class="{'cur':priceIndex==='4'}" @click="priceFilter('4')">70 以上</a></dd>
           </dl>
         </div>
         <!-- search result accessories list -->
@@ -53,7 +53,8 @@ export default {
       pageSize: 8,
       sortFlag: true,
       priceSort: '↑',
-      total: 0
+      total: 0,
+      priceIndex: 'all'
     }
   },
   components: {
@@ -73,7 +74,8 @@ export default {
       let param = {
         page: this.page,
         pageSize: this.pageSize,
-        sort: this.sortFlag ? 1 : -1
+        sort: this.sortFlag ? 1 : -1,
+        priceIndex: this.priceIndex
       }
       // 不能直接把param丢进来，要加在params里
       axios.get('/goods', { params: param }).then((res) => {
@@ -93,6 +95,11 @@ export default {
     },
     pageChange (val) {
       this.page = val
+      this.getGoodsList()
+    },
+    priceFilter (val) {
+      this.priceIndex = val
+      this.page = 1
       this.getGoodsList()
     }
   }
@@ -128,11 +135,25 @@ export default {
         font-size: 20px;
         flex-basis: 150px;
         flex-shrink: 0;
-      }
+
         a{
           text-decoration: none;
           color: #000;
         }
+        a:hover{
+          color: #1989fa;
+          border-left: #1989fa 2px solid;
+          padding-left: 15px;
+        }
+        a:visited{
+          color: #000;
+        }
+        .cur{
+          color: #1989fa;
+          border-left: #1989fa 2px solid;
+          padding-left: 15px;
+        }
+      }
       .goods-list{
         flex-grow: 1;
         display: flex;
@@ -146,11 +167,17 @@ export default {
           margin-bottom: 10px;
           flex-grow: 1;
         }
-          .goods-pic /deep/ .el-image{
+</style>
+<style lang="scss">
+  .goods-pic{
+    .el-image{
             width: 210px;
           }
-          .goods-msg /deep/ .el-button{
-            width: 98%;
-            color: #1989fa;
-          }
+  }
+  .goods-msg{
+    .el-button{
+      width: 98%;
+      color: #1989fa;
+    }
+  }
 </style>
