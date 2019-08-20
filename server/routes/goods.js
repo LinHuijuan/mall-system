@@ -4,7 +4,7 @@ var mongoose = require('mongoose')
 var Goods = require('../models/goods')
 
 // 连接MongoDB数据库
-mongoose.connect('mongodb://127.0.0.1:27017/mall')
+mongoose.connect('mongodb://127.0.0.1:27017/mall', {useNewUrlParser: true})
 
 mongoose.connection.on('connected', () => {
   console.log('MongoDB connected success.')
@@ -22,15 +22,15 @@ mongoose.connection.on('disconnected', () => {
 router.get('/', (req, res, next) => {
   // reg.param('XXX'):返回XXX参数的值,字符串类型
   // 页码
-  let page = parseInt(req.param('page'))
+  let page = parseInt(req.query.page)
   // 每一页的文档条数
-  let pageSize = parseInt(req.param('pageSize'))
+  let pageSize = parseInt(req.query.pageSize)
   // 排序的方式
-  let sort = req.param('sort')
+  let sort = req.query.sort
   // 跳过的文档条数
   let skip = (page - 1) * pageSize
   let params = {}
-  let priceIndex = req.param('priceIndex')
+  let priceIndex = req.query.priceIndex
   let priceGt, priceLte
   if (priceIndex !== 'all') {
     switch (priceIndex) {
