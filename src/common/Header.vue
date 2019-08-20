@@ -2,8 +2,9 @@
   <div class='header'>
     <span class='title'>奋超商城</span>
     <div class='header-msg'>
-      <div class='user'>用户名</div>
-      <div class='state' @click='dialogFormVisible = true'>登录</div>
+      <div class='user'>{{userLoginName}}</div>
+      <div class='state' @click='dialogFormVisible = true' v-if='!logined'>登录</div>
+      <div class="state" @click='logout' v-if='logined'>退出</div>
       <el-dialog title="登录" :visible.sync="dialogFormVisible">
         <el-form
           :model='ruleForm'
@@ -55,6 +56,8 @@ export default {
     return {
       userName: '',
       userPwd: '',
+      userLoginName: '',
+      logined: false,
       dialogFormVisible: false,
       ruleForm: {
         name: '',
@@ -92,6 +95,8 @@ export default {
       }).then(res => {
         if (res.data.status === '0') {
           _this.dialogFormVisible = false
+          _this.logined = true
+          _this.userLoginName = _this.userName
           _this.$message({
             type: 'success',
             message: '登陆成功'
@@ -101,6 +106,14 @@ export default {
             type: 'info',
             message: res.data.msg
           })
+        }
+      })
+    },
+    logout () {
+      axios.post('/users/logout').then(res => {
+        if (res.data.status === '0') {
+          this.logined = false
+          this.userLoginName = ''
         }
       })
     }
