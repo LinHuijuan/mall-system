@@ -69,7 +69,18 @@ export default {
       }
     }
   },
+  mounted () {
+    this.checkLogin()
+  },
   methods: {
+    checkLogin () {
+      axios.get('/users/checklogin').then(res => {
+        if (res.data.status === '0') {
+          this.userLoginName = res.data.result.userName
+          this.logined = true
+        }
+      })
+    },
     submitForm (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {

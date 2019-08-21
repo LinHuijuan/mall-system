@@ -81,7 +81,7 @@ router.get('/', (req, res, next) => {
 })
 
 // 加入到购物车
-module.exports = router.post('/addCart', (req, res, next) => {
+router.post('/addCart', (req, res, next) => {
   let userId = '00000000001'
   let productId = req.body.productId
   let User = require('../models/user')
@@ -150,3 +150,5 @@ module.exports = router.post('/addCart', (req, res, next) => {
     }
   })
 })
+
+module.exports = router

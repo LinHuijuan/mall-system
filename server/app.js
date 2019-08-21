@@ -24,6 +24,28 @@ app.use('/', indexRouter)
 app.use('/users', usersRouter)
 app.use('/goods', goodsRouter)
 
+app.use(function (req, res, next) {
+  console.log('Time:', Date.now())
+  next()
+})
+
+app.use((req, res, next) => {
+  if (req.cookies.userId) {
+    next()
+  } else {
+    if (req.originalUrl === '/users/login' ||
+        req.originalUrl === '/users/logout') {
+      next()
+    } else {
+      res.json({
+        status: '10001',
+        msg: '请先登录账号',
+        result: ''
+      })
+    }
+  }
+})
+
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404))
