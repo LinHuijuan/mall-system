@@ -24,11 +24,6 @@ app.use('/', indexRouter)
 app.use('/users', usersRouter)
 app.use('/goods', goodsRouter)
 
-app.use(function (req, res, next) {
-  console.log('Time:', Date.now())
-  next()
-})
-
 app.use((req, res, next) => {
   if (req.cookies.userId) {
     next()

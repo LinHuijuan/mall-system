@@ -4,7 +4,9 @@ var mongoose = require('mongoose')
 var Goods = require('../models/goods')
 
 // 连接MongoDB数据库
-mongoose.connect('mongodb://127.0.0.1:27017/mall', {useNewUrlParser: true})
+mongoose.connect('mongodb://127.0.0.1:27017/mall', {
+  useNewUrlParser: true
+})
 
 mongoose.connection.on('connected', () => {
   console.log('MongoDB connected success.')
@@ -34,10 +36,22 @@ router.get('/', (req, res, next) => {
   let priceGt, priceLte
   if (priceIndex !== 'all') {
     switch (priceIndex) {
-      case '1': priceGt = 0; priceLte = 30; break
-      case '2': priceGt = 30; priceLte = 50; break
-      case '3': priceGt = 50; priceLte = 70; break
-      case '4': priceGt = 70; priceLte = 100000; break
+      case '1':
+        priceGt = 0
+        priceLte = 30
+        break
+      case '2':
+        priceGt = 30
+        priceLte = 50
+        break
+      case '3':
+        priceGt = 50
+        priceLte = 70
+        break
+      case '4':
+        priceGt = 70
+        priceLte = 100000
+        break
     }
     params = {
       productPrice: {
@@ -58,7 +72,9 @@ router.get('/', (req, res, next) => {
   // limit(num)限定取出的文档条数
   let goodsModel = Goods.find(params).skip(skip).limit(pageSize)
   // 针对某个字段排序，1表示升序，-1表示降序
-  goodsModel.sort({'productPrice': sort})
+  goodsModel.sort({
+    'productPrice': sort
+  })
   // exec(callback)
   goodsModel.exec((err, doc) => {
     if (err) {
@@ -82,73 +98,81 @@ router.get('/', (req, res, next) => {
 
 // 加入到购物车
 router.post('/addCart', (req, res, next) => {
-  let userId = '00000000001'
-  let productId = req.body.productId
-  let User = require('../models/user')
-  User.findOne({userId: userId}, (err, userDoc) => {
-    if (err) {
-      res.json({
-        status: '1',
-        msg: err.message
-      })
-    } else {
-      if (userDoc) {
-        let hasAdd = false
-        userDoc.cartList.forEach((item) => {
-          if (item.productId === productId) {
-            hasAdd = true
-            item.productNum++
-          }
+  if (!req.cookies.userId) {
+    next()
+  } else {
+    let userId = req.cookies.userId
+    let productId = req.body.productId
+    let User = require('../models/user')
+    User.findOne({
+      userId: userId
+    }, (err, userDoc) => {
+      if (err) {
+        res.json({
+          status: '1',
+          msg: err.message
         })
-        if (hasAdd) {
-          userDoc.save((err3, doc3) => {
-            if (err3) {
-              res.json({
-                status: '1',
-                msg: err3.message
-              })
-            } else {
-              res.json({
-                status: '0',
-                msg: 'suc',
-                result: userDoc
-              })
+      } else {
+        if (userDoc) {
+          let hasAdd = false
+          userDoc.cartList.forEach((item) => {
+            if (item.productId === productId) {
+              hasAdd = true
+              item.productNum++
             }
           })
-        } else {
-          Goods.findOne({productId: productId}, (err1, doc) => {
-            if (err1) {
-              res.json({
-                status: '1',
-                msg: err1.message
-              })
-            } else {
-              if (doc) {
-                doc.productNum = 1
-                doc.checked = true
-                doc.save()
-                userDoc.cartList.push(doc)
-                userDoc.save((err2, doc2) => {
-                  if (err2) {
-                    res.json({
-                      status: '1',
-                      msg: err2.message
-                    })
-                  } else {
-                    res.json({
-                      status: '0',
-                      msg: 'suc',
-                      result: doc
-                    })
-                  }
+          if (hasAdd) {
+            userDoc.save((err3, doc3) => {
+              if (err3) {
+                res.json({
+                  status: '1',
+                  msg: err3.message
+                })
+              } else {
+                res.json({
+                  status: '0',
+                  msg: 'suc',
+                  result: userDoc
                 })
               }
-            }
-          })
+            })
+          } else {
+            Goods.findOne({
+              productId: productId
+            }, (err1, doc) => {
+              if (err1) {
+                res.json({
+                  status: '1',
+                  msg: err1.message
+                })
+              } else {
+                if (doc) {
+                  doc.productNum = 1
+                  doc.checked = true
+                  doc.save()
+                  userDoc.cartList.push(doc)
+                  userDoc.save((err2, doc2) => {
+                    if (err2) {
+                      res.json({
+                        status: '1',
+                        msg: err2.message
+                      })
+                    } else {
+                      res.json({
+                        status: '0',
+                        msg: 'suc',
+                        result: doc
+                      })
+                    }
+                  })
+                }
+              }
+            })
+          }
         }
       }
-    }
-  })
+    })
+  }
 })
 
 module.exports = router

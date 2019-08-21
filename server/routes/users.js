@@ -83,11 +83,37 @@ router.get('/checklogin', (req, res, next) => {
       }
     })
   } else {
-    res.json({
-      status: '1',
-      msg: '请登录账号',
-      result: ''
-    })
+    next()
   }
+})
+
+// 获取购物车数据
+router.get('/cartlist', (req, res, next) => {
+  let params = {
+    userId: req.cookies.userId
+  }
+  User.findOne(params, (err, doc) => {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      })
+    } else {
+      if (doc) {
+        res.json({
+          status: '0',
+          msg: '',
+          result: doc.cartList
+        })
+      } else {
+        res.json({
+          status: '1',
+          msg: '当前购物车为空',
+          result: ''
+        })
+      }
+    }
+  })
 })
 module.exports = router

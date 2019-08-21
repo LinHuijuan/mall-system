@@ -107,9 +107,15 @@ export default {
         productId: val
       }).then(res => {
         if (res.data.status === '0') {
-          alert('success')
+          this.$message({
+            type: 'success',
+            message: '加入成功'
+          })
         } else {
-          alert('fail')
+          this.$message({
+            type: 'info',
+            message: res.data.msg
+          })
         }
       })
     }
