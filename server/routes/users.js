@@ -89,10 +89,53 @@ router.get('/checklogin', (req, res, next) => {
 
 // 获取购物车数据
 router.get('/cartlist', (req, res, next) => {
-  let params = {
-    userId: req.cookies.userId
+  if (!req.cookies.userId) {
+    next()
+  } else {
+    let params = {
+      userId: req.cookies.userId
+    }
+    User.findOne(params, (err, doc) => {
+      if (err) {
+        res.json({
+          status: '1',
+          msg: err.message,
+          result: ''
+        })
+      } else {
+        if (doc) {
+          res.json({
+            status: '0',
+            msg: '',
+            result: doc.cartList
+          })
+        } else {
+          res.json({
+            status: '1',
+            msg: '当前购物车为空',
+            result: ''
+          })
+        }
+      }
+    })
   }
-  User.findOne(params, (err, doc) => {
+})
+
+// 删除购物车商品
+router.post('/cartDel', (req, res, next) => {
+  let userId = req.cookies.userId
+  let productId = req.body.productId
+  // model.update(查询条件,更新对象,callback)
+  User.update({
+    userId: userId
+  }, {
+    // $pull:删除指定数据
+    $pull: {
+      'cartList': {
+        productId: productId
+      }
+    }
+  }, (err, doc) => {
     if (err) {
       res.json({
         status: '1',
@@ -100,20 +143,13 @@ router.get('/cartlist', (req, res, next) => {
         result: ''
       })
     } else {
-      if (doc) {
-        res.json({
-          status: '0',
-          msg: '',
-          result: doc.cartList
-        })
-      } else {
-        res.json({
-          status: '1',
-          msg: '当前购物车为空',
-          result: ''
-        })
-      }
+      res.json({
+        status: '0',
+        msg: 'suc',
+        result: doc
+      })
     }
   })
 })
+
 module.exports = router

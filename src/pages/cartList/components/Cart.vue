@@ -20,7 +20,7 @@
           <i class='el-icon-circle-plus-outline'></i>
         </li>
         <li>￥{{item.productPrice * item.productNum}}</li>
-        <li><i class='el-icon-delete'></i></li>
+        <li><a href="javascript:;" @click="cartDelConfirm(item.productId)"><i class='el-icon-delete'></i></a></li>
       </ul>
   </div>
 </template>
@@ -31,7 +31,8 @@ export default {
   data () {
     return {
       itemChecked: true,
-      cartList: []
+      cartList: [],
+      productDelId: ''
     }
   },
   mounted () {
@@ -43,11 +44,39 @@ export default {
         let res = response.data
         if (res.status === '0') {
           this.cartList = res.result
+        } else if (res.status === '10001') {
+          this.$message({
+            type: 'info',
+            message: res.msg
+          })
         }
       })
     },
     checked () {
       this.itemChecked = !this.itemChecked
+    },
+    cartDelConfirm (productId) {
+      this.$confirm('请确认是否将商品移除购物车', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.productDelId = productId
+        this.cartDel()
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      }).catch(() => {})
+    },
+    cartDel () {
+      axios.post('/users/cartDel', {
+        productId: this.productDelId
+      }).then(res => {
+        if (res.data.status === '0') {
+          this.init()
+        }
+      })
     }
   }
 }
@@ -88,6 +117,9 @@ export default {
         text-align: center;
         height: 100px;
         line-height: 100px;
+        a{
+          color: #ccc;
+        }
       }
       .items-goods{
         flex-basis: 30%;
@@ -107,5 +139,13 @@ export default {
 <style lang="scss">
   .el-icon-circle-check, .el-icon-circle-close, .el-icon-remove-outline, .el-icon-circle-plus-outline, .el-icon-delete{
     font-size: 20px;
+    transition: 0.5s;
+  }
+  a:hover{
+    .el-icon-delete{
+      font-size: 22px;
+      color: #3a8cde;
+      transition: 1s;
+    }
   }
 </style>
