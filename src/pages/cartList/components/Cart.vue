@@ -9,15 +9,15 @@
       </ul>
       <ul class='cart-items' v-for='item in cartList' :key='item.id'>
         <li class="items-goods">
-          <i class='cart-item-check el-icon-circle-check' v-show='item.checked' @click='checked'></i><i class='cart-item-check el-icon-circle-close' v-show='!itemChecked' @click='checked'></i>
+          <i class='cart-item-check el-icon-circle-check' v-show='item.checked' @click="editCart('',item)"></i><i class='cart-item-check el-icon-circle-close' v-show='!item.checked' @click="editCart('',item)"></i>
           <img class='cart-item-pic' :src='`/static/${item.productImg}`'>
           <span class='cart-item-msg'>{{item.productName}}</span>
         </li>
         <li>￥{{item.productPrice}}</li>
         <li>
-          <i class='el-icon-remove-outline'></i>
+          <i class='el-icon-remove-outline' @click="editCart('sub',item)"></i>
           <span class='cart-num'>{{item.productNum}}</span>
-          <i class='el-icon-circle-plus-outline'></i>
+          <i class='el-icon-circle-plus-outline' @click="editCart('add',item)"></i>
         </li>
         <li>￥{{item.productPrice * item.productNum}}</li>
         <li><a href="javascript:;" @click="cartDelConfirm(item.productId)"><i class='el-icon-delete'></i></a></li>
@@ -52,9 +52,6 @@ export default {
         }
       })
     },
-    checked () {
-      this.itemChecked = !this.itemChecked
-    },
     cartDelConfirm (productId) {
       this.$confirm('请确认是否将商品移除购物车', '提示', {
         confirmButtonText: '确定',
@@ -76,6 +73,29 @@ export default {
         if (res.data.status === '0') {
           this.init()
         }
+      })
+    },
+    editCart (flag, item) {
+      if (flag === 'sub') {
+        if (item.productNum > 1) {
+          item.productNum--
+        } else {
+          this.$message({
+            type: 'info',
+            message: '商品数量最低为1'
+          })
+        }
+      } else if (flag === 'add') {
+        item.productNum++
+      } else {
+        item.checked = !item.checked
+      }
+      axios.post('/users/editCart', {
+        productId: item.productId,
+        productNum: item.productNum,
+        checked: item.checked
+      }).then(res => {
+        if (res.data.status === '0') {}
       })
     }
   }

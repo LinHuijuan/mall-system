@@ -152,4 +152,34 @@ router.post('/cartDel', (req, res, next) => {
   })
 })
 
+// 修改商品数量
+router.post('/editCart', (req, res, next) => {
+  let userId = req.cookies.userId
+  let productId = req.body.productId
+  let productNum = req.body.productNum
+  let checked = req.body.checked
+  console.log(userId, productId, productNum)
+  User.update({
+    'userId': userId,
+    'cartList.productId': productId
+  }, {
+    // 更新子文档  $：代表数组的下标
+    'cartList.$.productNum': productNum,
+    'cartList.$.checked': checked
+  }, (err, doc) => {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      })
+    } else {
+      res.json({
+        status: '0',
+        msg: 'suc',
+        result: doc
+      })
+    }
+  })
+})
 module.exports = router
