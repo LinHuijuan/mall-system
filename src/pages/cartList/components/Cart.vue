@@ -14,21 +14,21 @@
           <img class='cart-item-pic' :src='`/static/${item.productImg}`'>
           <span class='cart-item-msg'>{{item.productName}}</span>
         </li>
-        <li>￥{{item.productPrice}}</li>
+        <li>{{item.productPrice | currency('￥')}}</li>
         <li>
           <i class='el-icon-remove-outline' @click="editCart('sub',item)"></i>
           <span class='cart-num'>{{item.productNum}}</span>
           <i class='el-icon-circle-plus-outline' @click="editCart('add',item)"></i>
         </li>
-        <li>￥{{item.productPrice * item.productNum}}</li>
+        <li>{{item.productPrice * item.productNum | currency('￥')}}</li>
         <li><a href="javascript:;" @click="cartDelConfirm(item.productId)"><i class='el-icon-delete'></i></a></li>
       </ul>
       <div class="cart-footer">
         <div class="cart-footer-left">
-          <span class="cart-check" @click='checkAll'>{{isCheckAll ? '取消全选' : '全选'}}</span>
+          <a href="javascript:;" class="cart-check" @click='checkAll'>{{isCheckAll ? '取消全选' : '全选'}}</a>
         </div>
         <div class="cart-fppter-right">
-          <span class="cart-price">总价：</span>
+          <span class="cart-price">总价：{{totalPrice | currency('￥')}}</span>
           <el-button type="primary" plain>购买</el-button>
         </div>
       </div>
@@ -61,6 +61,15 @@ export default {
       } else {
         return false
       }
+    },
+    totalPrice () {
+      let price = 0
+      this.cartList.forEach(item => {
+        if (item.checked) {
+          price += item.productNum * item.productPrice
+        }
+      })
+      return price
     }
   },
   methods: {
@@ -197,6 +206,16 @@ export default {
       margin-top: 10px;
       padding-left: 4%;
       border-radius: 10px;
+      a{
+        text-decoration: none;
+        color: #000;
+      }
+      a:hover{
+        color: #3a8cde;
+      }
+      .cart-price{
+        padding: 0 10px;
+      }
     }
   }
 </style>

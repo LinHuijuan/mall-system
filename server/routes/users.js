@@ -195,7 +195,6 @@ router.post('/cartCheckAll', (req, res, next) => {
       })
     } else {
       if (userDoc) {
-        console.log(checked)
         userDoc.cartList.forEach(item => {
           item.checked = checked
         })

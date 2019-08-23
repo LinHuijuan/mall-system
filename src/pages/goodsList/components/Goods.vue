@@ -31,7 +31,7 @@
             </div>
             <div class="goods-msg">
               <div class="name">{{item.productName}}</div>
-              <div class="price">{{item.productPrice}}</div>
+              <div class="price">{{item.productPrice | currency('￥')}}</div>
               <el-button @click="addCart(item.productId)">加入购物车</el-button>
             </div>
           </li>
