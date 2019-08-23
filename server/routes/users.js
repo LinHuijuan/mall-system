@@ -158,7 +158,6 @@ router.post('/editCart', (req, res, next) => {
   let productId = req.body.productId
   let productNum = req.body.productNum
   let checked = req.body.checked
-  console.log(userId, productId, productNum)
   User.update({
     'userId': userId,
     'cartList.productId': productId
@@ -182,4 +181,42 @@ router.post('/editCart', (req, res, next) => {
     }
   })
 })
+
+// 购物车全选与取消全选
+router.post('/cartCheckAll', (req, res, next) => {
+  let userId = req.cookies.userId
+  let checked = req.body.checked
+  User.findOne({userId: userId}, (err, userDoc) => {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      })
+    } else {
+      if (userDoc) {
+        console.log(checked)
+        userDoc.cartList.forEach(item => {
+          item.checked = checked
+        })
+        userDoc.save(err, doc => {
+          if (err) {
+            res.json({
+              status: '1',
+              msg: err.message,
+              result: ''
+            })
+          } else {
+            res.json({
+              status: '0',
+              msg: 'suc',
+              result: userDoc
+            })
+          }
+        })
+      }
+    }
+  })
+})
+
 module.exports = router

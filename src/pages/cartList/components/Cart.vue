@@ -9,7 +9,8 @@
       </ul>
       <ul class='cart-items' v-for='item in cartList' :key='item.id'>
         <li class="items-goods">
-          <i class='cart-item-check el-icon-circle-check' v-show='item.checked' @click="editCart('',item)"></i><i class='cart-item-check el-icon-circle-close' v-show='!item.checked' @click="editCart('',item)"></i>
+          <i class='cart-item-check el-icon-circle-check' v-show='item.checked' @click="editCart('',item)"></i>
+          <i class='cart-item-check el-icon-circle-close' v-show='!item.checked' @click="editCart('',item)"></i>
           <img class='cart-item-pic' :src='`/static/${item.productImg}`'>
           <span class='cart-item-msg'>{{item.productName}}</span>
         </li>
@@ -22,6 +23,15 @@
         <li>￥{{item.productPrice * item.productNum}}</li>
         <li><a href="javascript:;" @click="cartDelConfirm(item.productId)"><i class='el-icon-delete'></i></a></li>
       </ul>
+      <div class="cart-footer">
+        <div class="cart-footer-left">
+          <span class="cart-check" @click='checkAll'>{{isCheckAll ? '取消全选' : '全选'}}</span>
+        </div>
+        <div class="cart-fppter-right">
+          <span class="cart-price">总价：</span>
+          <el-button type="primary" plain>购买</el-button>
+        </div>
+      </div>
   </div>
 </template>
 <script>
@@ -37,6 +47,21 @@ export default {
   },
   mounted () {
     this.init()
+  },
+  computed: {
+    isCheckAll () {
+      let i = 0
+      this.cartList.forEach(item => {
+        if (item.checked) {
+          i++
+        }
+      })
+      if (i === this.cartList.length) {
+        return true
+      } else {
+        return false
+      }
+    }
   },
   methods: {
     init () {
@@ -97,6 +122,16 @@ export default {
       }).then(res => {
         if (res.data.status === '0') {}
       })
+    },
+    checkAll () {
+      let cartCheckAll = !this.isCheckAll
+      axios.post('/users/cartCheckAll', {
+        checked: cartCheckAll
+      }).then(res => {
+        if (res.data.status === '0') {
+          this.init()
+        }
+      })
     }
   }
 }
@@ -112,7 +147,7 @@ export default {
       line-height: 30px;
       padding: 0;
       margin: 0;
-      border: 2px solid #ccc;
+      border: 2px solid #b3d8ff;
       background: #c8e3ff;
       li{
         flex: 1 0 17.5%;
@@ -128,7 +163,7 @@ export default {
       justify-content: space-between;
       padding: 0;
       margin: 0;
-      border: 2px solid #ccc;
+      border: 2px solid #b3d8ff;
       border-top: 0;
       background: #fff;
       li{
@@ -153,6 +188,15 @@ export default {
           flex-basis: 30%;
         }
       }
+    }
+    .cart-footer{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      margin-top: 10px;
+      padding-left: 4%;
+      border-radius: 10px;
     }
   }
 </style>
