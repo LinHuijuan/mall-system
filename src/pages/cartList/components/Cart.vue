@@ -29,7 +29,7 @@
         </div>
         <div class="cart-fppter-right">
           <span class="cart-price">总价：{{totalPrice | currency('￥')}}</span>
-          <el-button type="primary" plain>购买</el-button>
+          <el-button type="primary" plain @click='jump'>购买</el-button>
         </div>
       </div>
   </div>
@@ -141,6 +141,9 @@ export default {
           this.init()
         }
       })
+    },
+    jump () {
+      this.$router.push('/order')
     }
   }
 }
@@ -220,15 +223,17 @@ export default {
   }
 </style>
 <style lang="scss">
-  .el-icon-circle-check, .el-icon-circle-close, .el-icon-remove-outline, .el-icon-circle-plus-outline, .el-icon-delete{
-    font-size: 20px;
-    transition: 0.5s;
-  }
-  a:hover{
-    .el-icon-delete{
-      font-size: 22px;
-      color: #3a8cde;
-      transition: 1s;
+  .cart-wrap{
+    .el-icon-circle-check, .el-icon-circle-close, .el-icon-remove-outline, .el-icon-circle-plus-outline, .el-icon-delete{
+      font-size: 20px;
+      transition: 0.5s;
+    }
+    a:hover{
+      .el-icon-delete{
+        font-size: 22px;
+        color: #3a8cde;
+        transition: 1s;
+      }
     }
   }
 </style>
