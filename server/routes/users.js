@@ -21,19 +21,13 @@ router.post('/login', (req, res, next) => {
           // 放在根路径下，而不是其他路径
           path: '/',
           // 单位：ms
-          maxAge: 1000 * 60 * 10
-        })
-        res.cookie('userId', doc.userId, {
-          // 放在根路径下，而不是其他路径
-          path: '/',
-          // 单位：ms
-          maxAge: 1000 * 60 * 10
+          maxAge: 1000 * 60 * 60
         })
         res.cookie('userName', doc.userName, {
           // 放在根路径下，而不是其他路径
           path: '/',
           // 单位：ms
-          maxAge: 1000 * 60 * 10
+          maxAge: 1000 * 60 * 60
         })
         res.json({
           status: '0',

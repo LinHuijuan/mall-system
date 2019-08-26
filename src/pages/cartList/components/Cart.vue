@@ -7,7 +7,7 @@
         <li>总价</li>
         <li>删除</li>
       </ul>
-      <ul class='cart-items' v-for='item in cartList' :key='item.id'>
+      <ul class='cart-items' v-for='item in cartList' :key='item.productId'>
         <li class="items-goods">
           <i class='cart-item-check el-icon-circle-check' v-show='item.checked' @click="editCart('',item)"></i>
           <i class='cart-item-check el-icon-circle-close' v-show='!item.checked' @click="editCart('',item)"></i>
