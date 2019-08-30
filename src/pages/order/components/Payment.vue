@@ -1,12 +1,17 @@
 <template>
-  <div>
-    支付
-  </div>
+  <div id='container'>支付</div>
 </template>
 <script>
+import { regPayment } from './payment/init.js'
+
 export default {
-  name: 'Payment'
+  name: 'Payment',
+  mounted () {
+    regPayment({
+      container: document.getElementById('container')
+    })
+  }
 }
 </script>
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 </style>
