@@ -1,22 +1,19 @@
-# mall-system
+# 奋超商城
 
 > A mall system.
 
-## Build Setup
+## 一、项目整体架构
 
-``` bash
-# install dependencies
-npm install
+### 1.1 前端
 
-# serve with hot reload at localhost:8080
-npm run dev
+- 视图层 - 商品列表、购物车、地址列表、商品结算、订单成功
+- 技术实现 - Vue、公共组件、Vue-Router、Axios、Vuex、Util、依赖
+- 工具支持 - Vue-cli、Webpack
 
-# build for production with minification
-npm run build
+### 1.2 后端
 
-# build for production and view the bundle analyzer report
-npm run build --report
-```
+- Node、Express
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
-# mall-system
+### 1.3 数据库
+
+- MongoDB
